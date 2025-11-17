@@ -97,12 +97,35 @@ The TypeScript tests use `@chainsafe/bls` to generate real BLS signatures and ve
    npx hardhat test test/BLSVerify.test.ts
    ```
 
-3. Deploy the contract (optional, tests deploy automatically):
+3. Deploy the contract to Sepolia (optional, tests deploy automatically to local network):
    ```bash
-   npx hardhat run scripts/deploy.ts
+   npx hardhat run scripts/deploy.ts --network sepolia
+   ```
+
+   **Setup for deployment:**
+   
+   a. Create a `.env` file in the project root:
+   ```bash
+   cp .env.example .env
+   ```
+   
+   b. Edit `.env` and add your credentials:
+   ```env
+   SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_API_KEY
+   PRIVATE_KEY=your_private_key_without_0x_prefix
+   ETHERSCAN_API_KEY=your_etherscan_api_key  # Optional, for verification
+   ```
+   
+   c. Make sure your wallet has Sepolia ETH for gas fees
+   
+   d. Deploy:
+   ```bash
+   npx hardhat run scripts/deploy.ts --network sepolia
    ```
 
 **Note:** TypeScript tests require EIP-2537 precompiles to be available. If running on Hardhat's default network, some tests may be skipped with a warning. For full functionality, deploy to a network that supports EIP-2537 precompiles or use a Hardhat fork of such a network.
+
+**Important:** Sepolia testnet may not support EIP-2537 precompiles. The contract will deploy but BLS operations may fail. Consider deploying to a network that supports EIP-2537 precompiles (check network documentation).
 
 ## Contract Functions
 
