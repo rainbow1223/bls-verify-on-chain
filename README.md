@@ -97,11 +97,8 @@ The TypeScript tests use `@chainsafe/bls` to generate real BLS signatures and ve
    npx hardhat test test/BLSVerify.test.ts
    ```
 
-3. Deploy the contract to Sepolia (optional, tests deploy automatically to local network):
-   ```bash
-   npx hardhat run scripts/deploy.ts --network sepolia
-   ```
-
+3. Deploy the contract (optional, tests deploy automatically to local network):
+   
    **Setup for deployment:**
    
    a. Create a `.env` file in the project root:
@@ -109,19 +106,44 @@ The TypeScript tests use `@chainsafe/bls` to generate real BLS signatures and ve
    cp .env.example .env
    ```
    
-   b. Edit `.env` and add your credentials:
+   b. Edit `.env` and add your credentials for the network you want to deploy to:
    ```env
+   # For Sepolia testnet
    SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_API_KEY
+   
+   # For Mainnet (use with caution!)
+   MAINNET_RPC_URL=https://eth-mainnet.g.alchemy.com/v2/YOUR_ALCHEMY_API_KEY
+   
+   # For other networks, add their RPC URLs
    PRIVATE_KEY=your_private_key_without_0x_prefix
    ETHERSCAN_API_KEY=your_etherscan_api_key  # Optional, for verification
    ```
    
-   c. Make sure your wallet has Sepolia ETH for gas fees
+   c. Make sure your wallet has ETH for gas fees on the target network
    
-   d. Deploy:
+   d. Deploy to your chosen network:
    ```bash
+   # Deploy to Sepolia
    npx hardhat run scripts/deploy.ts --network sepolia
+   
+   # Deploy to Mainnet (be careful!)
+   npx hardhat run scripts/deploy.ts --network mainnet
+   
+   # Deploy to Holesky
+   npx hardhat run scripts/deploy.ts --network holesky
+   
+   # Deploy to Goerli (deprecated)
+   npx hardhat run scripts/deploy.ts --network goerli
    ```
+   
+   **Available networks:**
+   - `hardhat` - Local Hardhat network (default, no --network flag needed)
+   - `sepolia` - Sepolia testnet (Chain ID: 11155111)
+   - `mainnet` - Ethereum mainnet (Chain ID: 1)
+   - `goerli` - Goerli testnet (Chain ID: 5, deprecated)
+   - `holesky` - Holesky testnet (Chain ID: 17000)
+   
+   To add a custom network, edit `hardhat.config.ts` and add it to the `networks` object.
 
 **Note:** TypeScript tests require EIP-2537 precompiles to be available. If running on Hardhat's default network, some tests may be skipped with a warning. For full functionality, deploy to a network that supports EIP-2537 precompiles or use a Hardhat fork of such a network.
 
